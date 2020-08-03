@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TodoListItem from './TodoListItem';
 
-const TodoList = ({ todos }) => {
+import useGlobalContext from '../hooks/useGlobalContext';
+
+const TodoList = () => {
+  const { todos, getTodos } = useGlobalContext();
+
+  useEffect(() => {
+    // get all todos when when App mounts
+    getTodos();
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <ul className='max-w-screen-lg mx-auto grid gap-4'>
+    <ul className='w-full max-w-screen-lg mx-auto px-2 cursor-pointer grid gap-4'>
       {todos.map(todo => (
         <TodoListItem todo={todo} key={todo.id} />
       ))}
@@ -13,11 +23,11 @@ const TodoList = ({ todos }) => {
 };
 
 TodoList.defaultProps = {
-  todos: [],
+  todos: []
 };
 
 TodoList.propTypes = {
-  todos: PropTypes.array,
+  todos: PropTypes.array
 };
 
 export default TodoList;
